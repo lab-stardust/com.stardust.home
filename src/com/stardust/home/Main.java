@@ -63,6 +63,11 @@ public class Main extends AppWidgetProvider {
 		String action = intent.getAction();
 		resources = context.getResources();
 
+		if (currentTime == 0) {
+			currentTime = System.currentTimeMillis();
+			mode = 2;
+		}
+
 		if (action.equals(IMAGE_BUTTON)) {
 			if (mode < 2) {
 				mode++;
@@ -74,20 +79,27 @@ public class Main extends AppWidgetProvider {
 			createBitmap();
 			rv.setTextViewText(id.time, Time.getStringTime(currentTime));
 			rv.setImageViewBitmap(id.imageview, bitmap);
-			awm.updateAppWidget(awid, rv);
+
+			try {
+				awm.updateAppWidget(awid, rv);
+			} catch (IllegalArgumentException e) {
+
+			}
+
 		} else if (action.equals(UPDATE_BUTTON)) {
 			currentTime = System.currentTimeMillis();
 			Data.update(currentTime);
 			createBitmap();
 			rv.setTextViewText(id.time, Time.getStringTime(currentTime));
 			rv.setImageViewBitmap(id.imageview, bitmap);
-			awm.updateAppWidget(awid, rv);
-		} else if (action.equals(LEFT_BUTTON)) {
-			if (currentTime == 0) {
-				currentTime = System.currentTimeMillis();
-				mode = 2;
+
+			try {
+				awm.updateAppWidget(awid, rv);
+			} catch (IllegalArgumentException e) {
+
 			}
 
+		} else if (action.equals(LEFT_BUTTON)) {
 			currentTime -= Time.OFFSET[oid];
 
 			if (currentTime < 0) {
@@ -104,20 +116,23 @@ public class Main extends AppWidgetProvider {
 			} catch (IllegalArgumentException e) {
 
 			}
+
 		} else if (action.equals(CENTER_BUTTON)) {
 			if (oid < 5) {
 				oid++;
 			} else {
 				oid = 0;
 			}
+
 			rv.setTextViewText(id.offset, Time.OFFSET_LABEL[oid]);
-			awm.updateAppWidget(awid, rv);
-		} else if (action.equals(RIGHT_BUTTON)) {
-			if (currentTime == 0) {
-				currentTime = System.currentTimeMillis();
-				mode = 2;
+
+			try {
+				awm.updateAppWidget(awid, rv);
+			} catch (IllegalArgumentException e) {
+
 			}
 
+		} else if (action.equals(RIGHT_BUTTON)) {
 			currentTime += Time.OFFSET[oid];
 			Data.update(currentTime);
 			createBitmap();
