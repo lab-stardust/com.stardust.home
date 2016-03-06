@@ -17,3 +17,6 @@
 3. ウィジェットの一覧で「Home Planetarium」を選択してください。
 
 ※このウィジェットは4x4のスペースが必要です。
+
+### プレビュー
+![プレビュー](https://github.com/lab-stardust/com.stardust.home/blob/master/res/drawable/preview.png)
