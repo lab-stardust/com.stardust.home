@@ -26,13 +26,8 @@ import android.widget.RemoteViews;
  * @version 1.0
  */
 public class Main extends AppWidgetProvider {
-	private static RemoteViews rv;
-	private static AppWidgetManager awm;
-	private static Resources resources;
 	private static byte mode;
-	private static int oid;
-	private static int awid;
-	private static Bitmap bitmap;
+	private static byte oid;
 	private static long currentTime;
 	private static final String IMAGE_BUTTON = "com.stardust.home.IMAGE_BUTTON";
 	private static final String UPDATE_BUTTON = "com.stardust.home.UPDATE_BUTTON";
@@ -56,12 +51,11 @@ public class Main extends AppWidgetProvider {
 
 	public void onReceive(Context context, Intent intent) {
 		super.onReceive(context, intent);
-		awm = AppWidgetManager.getInstance(context);
-		awid = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, -1);
-		rv = new RemoteViews(context.getPackageName(), layout.main);
-		awm.updateAppWidget(awid, rv);
+		AppWidgetManager awm = AppWidgetManager.getInstance(context);
+		int awid = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, -1);
+		RemoteViews rv = new RemoteViews(context.getPackageName(), layout.main);
 		String action = intent.getAction();
-		resources = context.getResources();
+		Resources resources = context.getResources();
 
 		if (currentTime == 0) {
 			currentTime = System.currentTimeMillis();
@@ -76,9 +70,8 @@ public class Main extends AppWidgetProvider {
 			}
 
 			Data.update(currentTime);
-			createBitmap();
 			rv.setTextViewText(id.time, Time.getStringTime(currentTime));
-			rv.setImageViewBitmap(id.imageview, bitmap);
+			rv.setImageViewBitmap(id.imageview, getBitmap(resources));
 
 			try {
 				awm.updateAppWidget(awid, rv);
@@ -89,9 +82,8 @@ public class Main extends AppWidgetProvider {
 		} else if (action.equals(UPDATE_BUTTON)) {
 			currentTime = System.currentTimeMillis();
 			Data.update(currentTime);
-			createBitmap();
 			rv.setTextViewText(id.time, Time.getStringTime(currentTime));
-			rv.setImageViewBitmap(id.imageview, bitmap);
+			rv.setImageViewBitmap(id.imageview, getBitmap(resources));
 
 			try {
 				awm.updateAppWidget(awid, rv);
@@ -107,9 +99,8 @@ public class Main extends AppWidgetProvider {
 			}
 
 			Data.update(currentTime);
-			createBitmap();
 			rv.setTextViewText(id.time, Time.getStringTime(currentTime));
-			rv.setImageViewBitmap(id.imageview, bitmap);
+			rv.setImageViewBitmap(id.imageview, getBitmap(resources));
 
 			try {
 				awm.updateAppWidget(awid, rv);
@@ -135,9 +126,8 @@ public class Main extends AppWidgetProvider {
 		} else if (action.equals(RIGHT_BUTTON)) {
 			currentTime += Time.OFFSET[oid];
 			Data.update(currentTime);
-			createBitmap();
 			rv.setTextViewText(id.time, Time.getStringTime(currentTime));
-			rv.setImageViewBitmap(id.imageview, bitmap);
+			rv.setImageViewBitmap(id.imageview, getBitmap(resources));
 
 			try {
 				awm.updateAppWidget(awid, rv);
@@ -149,15 +139,13 @@ public class Main extends AppWidgetProvider {
 
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
-		awm = appWidgetManager;
-		rv = new RemoteViews(context.getPackageName(), layout.main);
-		resources = context.getResources();
+		RemoteViews rv = new RemoteViews(context.getPackageName(), layout.main);
+		Resources resources = context.getResources();
 		currentTime = System.currentTimeMillis();
 		Data.update(currentTime);
-		createBitmap();
 		rv.setTextViewText(id.offset, Time.OFFSET_LABEL[oid]);
 		rv.setTextViewText(id.time, Time.getStringTime(currentTime));
-		rv.setImageViewBitmap(id.imageview, bitmap);
+		rv.setImageViewBitmap(id.imageview, getBitmap(resources));
 		Intent intentImageButton = new Intent(context, Main.class);
 		intentImageButton.setAction(IMAGE_BUTTON);
 		Intent intentUpdateButton = new Intent(context, Main.class);
@@ -180,13 +168,13 @@ public class Main extends AppWidgetProvider {
 			rv.setOnClickPendingIntent(id.offset, PendingIntent.getBroadcast(context, appWidgetId, intentCenterButton, PendingIntent.FLAG_UPDATE_CURRENT));
 			intentRightButton.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 			rv.setOnClickPendingIntent(id.right, PendingIntent.getBroadcast(context, appWidgetId, intentRightButton, PendingIntent.FLAG_UPDATE_CURRENT));
-			awm.updateAppWidget(appWidgetId, rv);
+			appWidgetManager.updateAppWidget(appWidgetId, rv);
 		}
 	}
 
-	private void createBitmap() {
-		bitmap = Bitmap.createBitmap(Data.R * 2, Data.R * 2, Bitmap.Config.ARGB_4444);
-		Canvas c = new Canvas(bitmap);
+	private Bitmap getBitmap(Resources resources) {
+		Bitmap ret = Bitmap.createBitmap(Data.R * 2, Data.R * 2, Bitmap.Config.ARGB_4444);
+		Canvas c = new Canvas(ret);
 		Paint p = new Paint();
 		p.setAntiAlias(true);
 		p.setTextSize(20);
@@ -401,5 +389,7 @@ public class Main extends AppWidgetProvider {
 			c.drawText("S", Data.R - 8, Data.R * 2 - 5, p);
 			c.drawText("E", 5, Data.R + 8, p);
 		}
+
+		return ret;
 	}
 }
