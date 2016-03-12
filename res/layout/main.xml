@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#66000000"
-    tools:ignore="UseCompoundDrawables" >
+    android:orientation="vertical" >
 
     <ImageView
         android:id="@+id/imageview"
@@ -14,8 +13,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:ignore="UseCompoundDrawables" >
+        android:layout_height="match_parent" >
 
         <TextView
             android:id="@+id/time"
@@ -31,7 +29,6 @@
             android:paddingRight="0dp"
             android:paddingStart="10dp"
             android:paddingTop="5dp"
-            android:text="@string/update"
             android:textColor="#ffffff"
             android:textSize="16sp" />
 
@@ -81,7 +78,6 @@
             android:layout_centerInParent="true"
             android:background="#00000000"
             android:gravity="center_horizontal|bottom"
-            android:text="@string/offset"
             android:textColor="#cccccc"
             android:textSize="12sp" />
 

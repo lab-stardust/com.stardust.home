@@ -1,6 +1,7 @@
 <resources>
 
     <string name="app_name">Home Planetarium</string>
+    <string name="wait">Please Wait…</string>
     <string name="update">update</string>
     <string name="left">left</string>
     <string name="offset">offset</string>
