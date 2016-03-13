@@ -7,7 +7,7 @@ import java.util.TimeZone;
  * Home Planetarium
  * Time class
  * @author Stardust Laboratory
- * @version 1.0
+ * @version 1.1
  */
 public class Time {
 	public static final long[] OFFSET = { 900000, 1800000, 3600000, 10800000, 86400000, 604800000 };
@@ -92,7 +92,6 @@ public class Time {
 
 	public static double jd(long currentTime) {
 		double ret, y, m;
-		boolean flag;
 		Calendar cal = Calendar.getInstance();
 		cal.setTimeInMillis(currentTime);
 		int year = cal.get(Calendar.YEAR);
@@ -101,7 +100,6 @@ public class Time {
 		int hour = cal.get(Calendar.HOUR_OF_DAY);
 		int minute = cal.get(Calendar.MINUTE);
 
-		flag = true;
 		y = year;
 		m = month;
 
@@ -110,27 +108,8 @@ public class Time {
 			y--;
 		}
 
-		if (y < 0) {
-			flag = false;
-			y *= -1;
-		}
-
 		ret = Math.floor(30.59 * (m - 2)) + date + hour / 24.0 + minute / 1440.0;
-
-		if (flag) {
-			ret += Math.floor(365.25 * y);
-
-			if (year > 1582 || (year == 1582 && month > 10) || (year == 1582 && month == 10 && date > 14)) {
-				ret += Math.floor(y / 400.0) - Math.floor(y / 100.0) + 1721088.5;
-
-			} else {
-				ret += 1721086.5;
-			}
-
-		} else {
-			ret += Math.floor(-365.25 * y - 0.75) + 1721452.5;
-		}
-
+		ret += Math.floor(365.25 * y) + Math.floor(y / 400.0) - Math.floor(y / 100.0) + 1721088.5;
 		return ret;
 	}
 }

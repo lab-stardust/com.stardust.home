@@ -15,7 +15,7 @@ import android.graphics.Typeface;
  * Home Planetarium
  * Data class
  * @author Stardust Laboratory
- * @version 1.0
+ * @version 1.1
  */
 public class Data {
 	public static final short R = 250;
@@ -49,10 +49,10 @@ public class Data {
 		int jLen = 0;
 
 		if (Main.mode > 0) {
-			p.setColor(Color.rgb(102, 102, 102));
+			p.setColor(Color.rgb(204, 204, 204));
 			iLen = Constellation.LINE_XY.length;
 			p.setStyle(Paint.Style.STROKE);
-			p.setStrokeWidth(1.5f);
+			p.setStrokeWidth(1);
 
 			for (i = 0; i < iLen; i++) {
 				jLen = Constellation.LINE_XY[i].length;
@@ -197,7 +197,7 @@ public class Data {
 		c.drawBitmap(moonLight, Moon.x - Data.moonR / 2, Moon.y - Data.moonR / 2, p);
 
 		if (Main.mode > 1) {
-			p.setColor(Color.rgb(204, 204, 204));
+			p.setColor(Color.rgb(255, 255, 255));
 			p.setTextSize(14);
 			iLen = Constellation.NAME.length;
 

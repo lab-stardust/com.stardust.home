@@ -15,18 +15,17 @@ import android.widget.RemoteViews;
  * Home Planetarium
  * Main class : AppWidgetProvider
  * @author Stardust Laboratory
- * @version 1.0
+ * @version 1.1
  */
 public class Main extends AppWidgetProvider {
 	public static byte mode = 2;
 	public static byte oid = 0;
-	public static long currentTime = System.currentTimeMillis();
+	public static long currentTime = 0;
 	public static final String IMAGE_BUTTON = "com.stardust.home.IMAGE_BUTTON";
 	public static final String UPDATE_BUTTON = "com.stardust.home.UPDATE_BUTTON";
 	public static final String LEFT_BUTTON = "com.stardust.home.LEFT_BUTTON";
 	public static final String CENTER_BUTTON = "com.stardust.home.CENTER_BUTTON";
 	public static final String RIGHT_BUTTON = "com.stardust.home.RIGHT_BUTTON";
-	public static final String WIDGET_UPDATE_ACTION = "com.stardust.home.intent.action.UPDATE_WIDGET";
 
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 		RemoteViews rv = new RemoteViews(context.getPackageName(), layout.main);
@@ -35,6 +34,7 @@ public class Main extends AppWidgetProvider {
 		rv.setOnClickPendingIntent(id.left, buildLeftButtonPendingIntent(context));
 		rv.setOnClickPendingIntent(id.offset, buildCenterButtonPendingIntent(context));
 		rv.setOnClickPendingIntent(id.right, buildRightButtonPendingIntent(context));
+		currentTime = System.currentTimeMillis();
 		Data.update(currentTime);
 		rv.setTextViewText(id.offset, Time.OFFSET_LABEL[oid]);
 		rv.setTextViewText(id.time, Time.getStringTime(currentTime));
